@@ -1,0 +1,26 @@
+from fyers_apiv3 import fyersModel
+import webbrowser
+
+redirect_uri= "https://trade.fyers.in/api-login/redirect-uri/index.html"  ## redircet_uri you entered while creating APP.
+client_id = "X93SP59B62-100"                       ## Client_id here refers to APP_ID of the created app
+secret_key = "0LJ1I6XFTE"                          ## app_secret key which you got after creating the app 
+grant_type = "authorization_code"                  ## The grant_type always has to be "authorization_code"
+response_type = "code"                             ## The response_type always has to be "code"
+state = "sample"
+
+appSession = fyersModel.SessionModel(client_id = client_id, redirect_uri = redirect_uri,response_type=response_type,state=state,secret_key=secret_key,grant_type=grant_type)
+generateTokenUrl = appSession.generate_authcode()
+
+
+print((generateTokenUrl))  
+webbrowser.open(generateTokenUrl,new=1)
+
+
+auth_code = input("")
+appSession.set_token(auth_code)
+response = appSession.generate_token()
+
+try: 
+    access_token = response["access_token"]
+except Exception as e:
+    print(e,response)
